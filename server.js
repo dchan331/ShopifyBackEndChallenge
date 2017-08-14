@@ -1,47 +1,30 @@
-const path = require('path');
-const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 3000;
-const api = require('./routes/routes');
 const axios = require('axios');
-const _ = require('underscore');
 
 
-app.get('/', (req, res) => {
-  axios.get('https://backend-challenge-winter-2017.herokuapp.com/customers.json')
-  .then(response => {
-    return response.data.pagination
-  })
-  .then(resp => {
-    var length = Math.ceil(resp.total / resp.per_page);
-    let array = [];
-    for(var i = 0 ; i < length ; i ++){
-      array.push(axiosLoop(i))
-    }
-    return Promise.all(array)
-  })
-  .then(resp =>{
-    let finalArray = []
-    resp.forEach((index) => {
-      index.forEach((invalid) => {
-        finalArray.push(invalid)
-      })
+axios.get('https://backend-challenge-winter-2017.herokuapp.com/customers.json')
+.then(response => {
+  return response.data.pagination
+})
+.then(resp => {
+  var length = Math.ceil(resp.total / resp.per_page);
+  let array = [];
+  for(var i = 0 ; i < length ; i ++){
+    array.push(axiosLoop(i))
+  }
+  return Promise.all(array)
+})
+.then(resp =>{
+  let finalArray = []
+  resp.forEach((index) => {
+    index.forEach((invalid) => {
+      finalArray.push(invalid)
     })
-    res.send({"invalid_customers":finalArray})
   })
-  .catch(err => {
-    res.send('error');
-  })
-});
-
-
-app.use('/api', api);
-
-app.listen(PORT, error => {
-  error
-  ? console.error(error)
-  : console.info(`==> 🌎 Listening on port ${PORT}. Visit http://localhost:${PORT}/ in your browser.`);
-});
+  console.log(JSON.stringify({"invalid_customers":finalArray}, null,4));
+})
+.catch(err => {
+  console.log('error', err);
+})
 
 function axiosLoop(index){
   let responseArray = [];
@@ -64,19 +47,20 @@ function axiosLoop(index){
 }
 
 function Validation(attribute, method){
-  let bool = false
-  if(!method.required){
-    return false
-  }else if(attribute === null){
-    bool = true
+  if(!method.required || attribute === null){
+    if(attribute === null){
+      return true
+    }else{
+      return false
+    }
   }else if(method.hasOwnProperty('length') && attribute.length < method.length.min){
-    bool = true
+    return true
   }else if(method.hasOwnProperty('length') && attribute.length > method.length.max){
-    bool = true
+    return true
   }else if((method.hasOwnProperty('type') && typeof attribute !== method["type"])){
-    bool = true
+    return true
   }
-  return bool
+  return false
 }
 
 function filterData(response){
@@ -99,5 +83,3 @@ function filterData(response){
   })
   return invalidArray;
 }
-
-module.exports = app;
