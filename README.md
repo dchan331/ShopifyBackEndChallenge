@@ -34,7 +34,8 @@ Results:
         {
             "id": 6,
             "invalid_fields": [
-                "name"
+                "name",
+                "age"
             ]
         },
         {
