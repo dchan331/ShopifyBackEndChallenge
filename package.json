@@ -6,7 +6,7 @@
   "author": "dchan331 <dchan331@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.16.2"
   },
   "repository": "https://github.com/dchan331/ShopifyBackEndChallenge"
 }
