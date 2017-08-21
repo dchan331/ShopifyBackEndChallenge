@@ -47,8 +47,8 @@ function axiosLoop(index){
 }
 
 function Validation(attribute, method){
-  if(!method.required || attribute === null){
-    if(attribute === null){
+  if(!method['required'] || attribute === null){
+    if(attribute === null || typeof attribute !== method['type']){
       return true
     }else{
       return false
@@ -57,7 +57,7 @@ function Validation(attribute, method){
     return true
   }else if(method.hasOwnProperty('length') && attribute.length > method.length.max){
     return true
-  }else if((method.hasOwnProperty('type') && typeof attribute !== method["type"])){
+  }else if((method.hasOwnProperty('type') && typeof attribute !== method['type'])){
     return true
   }
   return false
