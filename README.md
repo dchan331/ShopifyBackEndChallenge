@@ -1,3 +1,3 @@
 # ShopifyBackEndChallenge
-Back end challenge for Shopify Developer Intern - Winternship 2018 
-run npm start to check results
+Back end challenge for Shopify Developer Intern - Winternship 2018 <br>
+run <strong>npm start</strong> to check results
